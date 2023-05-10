@@ -1,0 +1,34 @@
+Dialogue systems, also known as conversational agents or chatbots, have become increasingly important in recent years due to their potential to revolutionize human-computer interaction \cite{dialogue-systems-review}.% By delegating mundane and repetitive tasks, dialogue systems can assist human agents in complex issues while reducing costs \cite{yan2017building}. 
+Furthermore, one can see a high activity in this field in the recent year, as the usage of ChatGPT \cite{chat-gpt} serves for a lot of different goals \cite{chat-gpt-usage,human-computer-interaction,lund2023chatting}. Just like with the ChatGPT recently Google has announced Bard, that is based on LaMDA \cite{lamda}, which serves for the same tasks.
+Additionally, dialogue systems provide a challenging problem in AI research, as they require a deep understanding of natural language and the ability to generate human-like responses \cite{Chen_2017}. A good confirmation of this thesis is the abundance of different natural language products, that are widely used, such as DeepPavlov \cite{burtsev2018deeppavlov}.
+
+\smallskip
+
+Contemporary dialogue models such as DialoGPT, BLOOM, and DialogBERT are predominantly text-based \cite{zhang2019dialogpt,Scao-2022,Gu-2020}. This is reasonable in scenarios where individuals converse solely through textual communication. However, in real-life situations, dialogues frequently incorporate images, such as when individuals respond to questions with photographs, provide offers or  express emotions \cite{mm_chat}. As a result, there is a need for dialogue models that can accommodate multi-modal inputs. 
+
+\smallskip
+
+Just as in the dialogues systems high activity is being spotted in the field of text2image generation \cite{imagen,stable-diffusion,Dalle}. These tools are also helpful in the art sphere \cite{AI-art}, healthcare \cite{chen2022generative}, physics \cite{manyar2023physics} and more. However, these models are limited to producing only images and taking text information as input. 
+
+
+\medskip
+
+These problems are solved with multi-modal deep learning models, that are increasingly important today due to the exponential growth of multimedia data in various domains \cite{Tadas_multimodal,mulit-modal-review,multi-modal-explainability,multi-modal-fusion}.
+Such models have numerous applications in various domains. %In e-commerce, these models can improve product recommendation systems by considering both the textual description and visual features of products \cite{Yu_2022}. 
+There is a strong potential of incorporating more modalities to dialogue assistants, such as better emotion recognition \cite{emotion-multimodal}, visual question answering \cite{vqa-multimodal,blip} and operating with the wide range of tasks \cite{GATO,flamingo,kosmos-1}.   
+
+
+
+
+
+\smallskip
+
+Therefore, one could focus on the task of generating an image description in a context of dialogue \cite{Lee-2021,mm_chat}. This task is more general compared to the response generation \cite{chat-gpt} or describing a picture \cite{blip2}, because it allows for better response generation with intention knowledge and knowledge about the image sense in a certain dialogue context.
+
+\smallskip
+
+\textit{Proposal.} That brings us to the task of interpreting an image in the context of dialogue, that is exactly the solution of aforementioned problem. We present IMage Augmented multi-modal Dialogue dataset (IMAD), that contains 4864 dialogues, where last utterance was replaced with image. To collect it we utilize multiple sources of dialogue dataset, present novel approach for image-text dialogue construction and labeled part of it with 3 assessors. We also present baseline models, based on the BLIP \cite{blip}, that outperform text-only BLIP and BlenderBot 400M  \cite{blenderbot} on this task. Train data included 4154 samples collected with automated approach and 582 samples labeled with assessors as "Partial Match". Test data included 128 samples, labeled by assessors and authors as "Perfect Match". 
+
+\smallskip
+
+Out dataset and code are published at \href{https://github.com/VityaVitalich/IMAD}{IMAD Repository}

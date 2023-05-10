@@ -1,0 +1,14 @@
+
+\textbf{Dataset}. We have presented a dataset (IMAD) with a considerable amount of multi-modal dialogues, sourced from validated text-only datasets. The creation of our dataset is automated with a two-step process, involving the filtering of the most relevant utterances and the selection of the most suitable image. Additionally, we developed a methodology for labeling the data, which proved to be well-understood and valid. This is demonstrated by the high Fleiss Kappa score, which measures the consistency between 3 assessors, as shown in Table ~\ref{TableAccuracies}. The basic statistics of our dataset are presented in Table ~\ref{TableBasicStatistics}, and the statistics per dialogue are quite similar to those of DailyDialogue, which is a well-validated dataset.
+
+\smallskip
+
+\textbf{Baseline Model}. In this study, we propose a model for the task of generating an utterance that is replaced with an image, using the IMAD. It is based on the BLIP architecture and achieves a relatively high BLEU score compared to other models that use only text information (as shown in Table~\ref{table:test_metrics}). This result demonstrates the validity of our dataset, which is consistent across different sources of data (as shown in Table~\ref{table:test_metrics_by_source}). We have overcame the issue of noisy and irrelevant pairs of utterances and images by incorporating a filtering stage and creating the IMAD, resulting in a model that potentially could outperform a previous approach due to cleaner data \cite{mm_chat}.
+
+\smallskip
+
+\textbf{Further Work}. These promising findings are expected to significantly contribute to the advancement of research in the field of multi-modal dialogue models. The methodology presented in this paper could aid researchers in the creation of more accurate filters for dialogue data, which could lead to improvements in the quality and efficiency of collecting multi-modal dialogues. We were limited with resources and yet tested model accuracy with a lot of repeats on a subset, that could have led to distribution bias across datasets. As well, low recall means we do not include a lot of valid samples, which reduces our total dataset size. Therefore, the approach presented in this work could facilitate the development of more effective multi-modal models. There is also potential to further improve the size of the dataset through labeling or model upgrades, as mentioned above.
+
+\smallskip
+
+Moreover, it is essential to conduct extensive research to compare multi-modal approaches for solving this task. This involves comparing models using cross-attention and concatenation of embeddings to that task, as well as conducting experiments with different Language Models and Visual Encoders. Such an investigation can lead to the development of more effective and accurate multi-modal models.

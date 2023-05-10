@@ -1,0 +1,16 @@
+\textbf{Multi-modal Tasks}. Multi-modal models involve multiple modalities, such as images \cite{blip,Dalle,sim-vlm,VinVl}, video \cite{frozen,video-qa,VideoCoCa}, or audio \cite{flow-tron,natural-speech}. In the field of text and image modalities there are variety of popular tasks. Visual question answering \cite{blip2,blip,ALBEF,ALIGN}, Image captioning \cite{kumar2022imagecaptioning,OFA,mPLUG}. As well, we distinguish as separate task image-text matching, that key is to match corresponding images and texts \cite{Radford-2021,blip,bridge-towers}
+
+\textbf{Mutli-modal Embeddings}. Modern models \cite{GATO,kosmos-1,flamingo} focus on connecting multiple modalities in one model. In contrast, we would like to focus on text with images data. One of the strongest multi-modal model was CLIP \cite{Radford-2021}, which uses image embeddings to align with text embeddings for image-text matching loss \cite{contrastive-loss}, so images will correspond to relevant phrases. The same idea was used in BLIP \cite{blip} with matching image and text embeddings \cite{ALBEF}. This is a key idea to filter pairs of text and image.
+
+
+
+
+\textbf{Multi-modal Data}. Current multi-modal data contains images with captions \cite{laion,SBU-captions,visual-genome,conceptual,ms-coco,ALIGN}. BLIP, BLIP2 and Flamingo were trained on these. However, these datasets do not contain dialogue contexts.
+
+Previous research has also encountered a similar challenge, as evidenced by a study on the topic of image-grounded dialogues \cite{mm_chat}. The authors of this study utilized dialogues from Chinese social media and crowd-sourcing to develop their model. The authors reported an increase in BLEU \cite{bleu} scores compared to generated responses that were not conditioned on image data.
+
+Another study \cite{Lee-2021} proposes constructing a dataset utilizing image-text matching via the Visual Semantic Reasoning Network (VSRN) \cite{li2019vsrn} with images sourced from the MS COCO \cite{ms-coco} and Flicker 30k \cite{flicker30k} datasets, just as it was done before \cite{dialogcc}. 
+
+
+
+

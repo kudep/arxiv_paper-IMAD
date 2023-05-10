@@ -1,0 +1,166 @@
+
+Previously approach with filter from VSRN did not show well results \cite{Lee-2021}. 
+Therefore to obtain more precise and appropriate dataset, we utilized a two-step process to determine the feasibility of replacing an utterance with an image. The first step involved predicting whether the utterance could be substituted with an image. The second step focused on matching a better picture utilizing VQA from BLIP.
+
+
+
+
+
+
+
+\subsection{Find Replaceable Utterances}
+% В этом разделе надо:
+% - коротко рассказать, что мы в начале нагенерили призаков описывающих замену, пназвали их скорами. Разметили данные. Построили бустинг
+% - описать сами признаки замены
+% - описать разметку для бустинга
+% - сам бустинг+выводы с фичеинпотансом
+
+The first step is to find utterances that could be replaced with an image. To accomplish this task, we have labeled a little subset, created features (we will name them scores) and built Random Forest model \cite{scikit-learn}.
+
+\subsubsection{Human Annotation.}
+
+For the initial step, we labeled 1000 random samples from the DailyDialogue \cite{Li-Su-2017}, state them as $U = \{u_1 \dots u_{1000}\}$, that are utterances with contexts. To label them, we were using a heuristic formulated as "\textit{This phrase potentially can be described with a picture}".
+
+\subsubsection{Replacing Features.}
+
+The matching process involves pairing each utterance with an image from the Unsplash. This is achieved by maximizing the cosine similarity between the embeddings of the utterance and the image extracted from CLIP \cite{Radford-2021}. 
+
+\smallskip
+
+To optimize the matching process, we conducted experiments using various text and image features that were deemed important for predicting if utterance is replaceable. The most promising results were obtained when each utterance was accompanied by the following features: Image Score, Maximum Entity Score, Sentence Similarity, BLEU Score, Threshold. Detailed description is provided in Appendix A.
+
+
+\smallskip
+
+
+
+
+\subsubsection{ML Labeling.}
+
+For classification we employed the Random Forest algorithm, that demonstrated the best precision\cite{scikit-learn}. This behavior is likely attributed to the high variance in the data, as evidenced by the standard deviation.
+
+Multiple tests were conducted with the Stratified K-fold cross-validation with 3 folds and 40 repeats. Precision was deemed to be the key metric, given the importance of minimizing errors, as even the exclusion of valid utterances is preferable to making errors.
+
+\smallskip
+
+The resulting model metrics are shown in Table~\ref{TableMetricsRF} and feature importances are shown in Fig.~\ref{pictorialization::FI}. 
+
+
+
+\subsection{Text-Image Matching}
+% \subsection{VQA Text-Image Matching}
+
+The criterion from the first step, which considers only the text and not the image, serves as a primary filter for the text-image task. However, it is insufficient on its own, that is shown by not so high correlation in previous works \cite{Lee-2021}. The image dataset limitations impose constraints on the ability to form a pair of utterance and image, even if the utterance is replaceable. To overcome this, it is necessary to introduce a step to match utterances with better images.
+
+\subsubsection{ML Labeling.}
+
+In order to improve the quality of the images, we utilized the BLIP VQA \cite{li2022blip}. To select proper images we use confidence of the model output, which is defined as sum of the log probabilities of each token in the utterance. $\operatorname{Confidence}(out, u) = \sum\limits_{i=1}^{length \, token(u)} out_{i, token(u)_i}$.
+
+\smallskip
+
+The process of selecting a better image for an utterance was carried out using the following steps:
+\begin{enumerate}
+    \item \textbf{Create scoring for all images}. For each utterance we have cosine similarity with every image in dataset $ \Bigl\{ \operatorname{cosine}(\operatorname{emb}_{CLIP}(u), \operatorname{emb}_{CLIP}(i)) \quad \forall i \Bigr\}   =: ISS_u$.
+    
+    \item \textbf{Create set of N images}. From all that set we take set of N images, which are the top-N for cosine similarity $\Bigl\{i \, | \, \operatorname{cosine}(\operatorname{emb}_{CLIP}(u), \operatorname{emb}_{CLIP}(i)) \geq ISS_{u_{(N)}} \Bigr\} =: TopImg_{u, N}$
+    %, where $ISS_{u_{(N)}}$ defines N order value in $ISS_u$ sorted in descending order.
+
+    
+    \item \textbf{Query the VQA}. The model was queried with the text input "Which phrase can describe this image?" for each image in the aforementioned set.
+    
+    % $$\forall u \quad \forall i \in TopImg_{u, N} \quad \exists VO_{quest, i} = \textit{VQA Output for image} = VQA(quest, i)$$,
+
+    % where $VQA(quest, i)$ is output of VQA model for question $quest$ and image $i$
+
+    
+    \item \textbf{Calculate confidences}. For each image in aforementioned set we calculate confidence $\Bigl\{ \operatorname{Confidence(out, u)} \, \big| \, out = \operatorname{VQA}(quest, i) \quad \forall i \in TopImg_{u,N}\Bigr\} =: ConfSet_{u,N} $.
+
+    
+    \item \textbf{Select the most confident}. Then we select image with the highest confidence score $\displaystyle\argmax \{ConfSet_{u,N}\} =: img_{N}$.
+\end{enumerate}
+
+\smallskip
+
+We conducted a test of our methodology by labeling image-text matching in the context of dialogue pairs that were previously identified as replaceable. The labeling process involved 3 classes: "\textit{Image matches}", "\textit{Image does not match}" and "\textit{Unknown}" in cases where determination was difficult. Our results, as presented in Table~\ref{TableVQA}, confirm that our initial assumptions were correct. Specifically, our findings indicate that, at best, only half of the pairs with replaceable utterances were found to have matching images.
+
+
+
+
+\subsubsection{Human Annotation.}
+
+%To refine the dataset, a RF model was employed to identify utterances that could be effectively replaced with corresponding images. The selected images were further matched with the textual context using a Visual Question Answering (VQA) model from BLIP \cite{blip} to improve the accuracy of the image selections. However, due to low recall, only 
+With the above method we obtained a subset of 4154 samples. In order to enlarge the dataset, samples with lower RF scores were selected and labeled by three expert assessors, resulting in the addition of 4644 more samples to the dataset. The labeled dataset was organized into 4 distinct categories: "\textit{Perfect Match}", "\textit{Partial Match}", "\textit{Undefined}" and "\textit{No Match}". Detailed description and labeling instructions provided  in Appendix D.
+
+\smallskip
+
+The inter-rater reliability of their annotations were evaluated using Fleiss-kappa statistic. The refined version of the IMage Augmented multi-modal Dialogue dataset (IMAD) is constructed from samples obtained with our initial approach and samples from dataset labeled with assessors, that had label "Perfect Match" or "Partial Match". Basic statistics are shown in Table~\ref{TableBasicStatistics}, number of samples from different sources and Fleiss's Kappa are shown in Table~\ref{TableAccuracies}.
+
+
+\begin{table}
+\caption{Accuracy for each data source for each label in assessor's validation dataset, where ground true labeling were done with authors. Fleiss Kappa across assessors for each data source. Number of samples in resulting dataset from each data source.}
+\label{TableAccuracies} 
+\begin{center}
+\tabcolsep=0.11cm
+\begin{tabular}{l|cccc|c|c}
+\hline
+Dataset &    1 class &     2 class &     3 class &    4 class & Fleiss Kappa & \# of samples\\
+\hline
+PersonaChat         &  0.29 &  0.43 &  0.82 &  1.0 & 0.83 & 2483  \\
+DailyDialog        & - &  0.50 & - & - & 0.80 & 899 \\
+EmpatheticDialogues   & - & - & - & - & 0.76 & 754 \\
+Commonsense-Dialogues & - & - &  1.0 & - & 0.83 & 220\\
+MuTual        & - & - & - & - & 0.88 & 333\\
+DREAM        & - & - & - & - & 0.81 & 175 \\
+\hline
+Mean Across All Sources & 0.29 & 0.46 & 0.9 & 1.0 & 0.82 & 810.67 \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{table}
+
+
+
+\begin{table}[htb]
+    \parbox{.5\linewidth}{
+        \caption{Number of image-text matches for different N in VQA image-text matching approach}
+        \label{TableVQA}
+        \centering
+        \tabcolsep=0.11cm
+            \scalebox{0.8}
+        {
+        \begin{tabular}{lccc}
+        \hline N & Image Matches & No Match &  Unknown \\ \hline
+        1  & 37 & 51 & 8\\
+        5 & 46 & 46 & 4 \\
+        10 & 48 & 44 & 4 \\
+        15 & 47 & 45 & 4 \\
+        50 & 42 & 51 & 3 \\
+        \hline
+        \end{tabular}
+        } 
+       
+    }
+    \hfill
+    \parbox{.5\linewidth}{
+        \caption{Basic Statistics of Dataset}
+        \label{TableBasicStatistics} 
+        \centering
+        \tabcolsep=0.11cm
+        \scalebox{0.8}
+        {
+        \begin{tabular}{lc}
+        \hline
+        Total Dialogues         &         4864 \\
+        Average Speaker Turns Per Context         &          5.1 \\
+        Average Number of Tokens Per Context   &          56.4 \\
+        Average Number of Tokens Per Replaced Utterance       &          14.5 \\
+        Size of Context Vocabulary & 12375 \\
+        Size of Replaced Utterances Vocabulary &   7962 \\
+        \hline
+        \end{tabular}
+        }    
+        }
+\end{table}
+
+
