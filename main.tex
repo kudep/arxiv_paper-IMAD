@@ -1,92 +1,86 @@
-% This is samplepaper.tex, a sample chapter demonstrating the
-% LLNCS macro package for Springer Computer Science proceedings;
-% Version 2.21 of 2022/01/12
-%
-\documentclass[runningheads]{llncs}
-%
-\usepackage[T1]{fontenc}
-% T1 fonts will be used to generate the final print and online PDFs,
-% so please use T1 fonts in your manuscript whenever possible.
-% Other font encondings may result in incorrect characters.
-%
-\usepackage{graphicx}
-% Used for displaying a sample figure. If possible, figure files should
-% be included in EPS format.
-%
-% If you use the hyperref package, please uncomment the following two lines
-% to display URLs in blue roman font according to Springer's eBook style:
-%\usepackage{color}
-%\renewcommand\UrlFont{\color{blue}\rmfamily}
-%
-%\usepackage{floatrow}
-%\floatsetup[table]{capposition=top}
+\documentclass{article}
 
-\usepackage{url}
-\usepackage{pgf}
-\usepackage{verbatim}
+
+\usepackage{PRIMEarxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
 \usepackage{amsmath}
-\usepackage{booktabs}
-\usepackage{caption}
-\usepackage[tableposition=top]{caption}
-\captionsetup{font=footnotesize}
-\usepackage{setspace} 
-\usepackage{hyperref}
-\usepackage{import}
 \usepackage{bbm}
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}
+\usepackage{fancyhdr}       % header
+\usepackage{graphicx}       % graphics
+\graphicspath{{media/}}     % organize your images and other figures under 
+\usepackage{import}
 
-\singlespacing
 
-\DeclareMathOperator*{\argmax}{arg\,max}
+
+
+%Header
+\pagestyle{fancy}
+\thispagestyle{empty}
+\rhead{ \textit{Moskvoretskii V. et al.}} 
+
+% Update your Headers here
+\fancyhead[LO]{IMAD}
+%\fancyhead[RE]{Moskvoretskii V.} % Firstauthor et al. if more than 2 - must use \documentclass[twoside]{article}
+
+
+
+  
+%% Title
+\title{IMAD: IMage-Augmented multi-modal Dialogue
+%%%% Cite as
+%%%% Update your official citation here when published 
+%\thanks{\textit{\underline{Citation}}: 
+%\textbf{Authors. Title. Pages.... DOI:000000/11111.}} 
+}
+
+\author{
+  Moskvoretskii Viktor \\
+  DeepPavlov.ai \\
+  \texttt{vvmoskvoretskiy@yandex.ru} \\
+  %% examples of more authors
+   \And
+  Frolov Anton \\
+  DeepPavlov.ai \\
+  \texttt{antonylovanto@gmail.com} \\
+  \And
+  Kuznetsov Denis \\
+  DeepPavlov.ai \\
+  \texttt{kuznetsov.den.p@gmail.com} \\
+
+}
+
 
 \begin{document}
-%
-\title{IMAD: IMage-Augmented multi-modal Dialogue}
-%
-%\titlerunning{Abbreviated paper title}
-% If the paper title is too long for the running head, you can set
-% an abbreviated paper title here
-%
-\author{Moskvoretskii Viktor\inst{1} \and
-Frolov Anton\inst{2} \and
-Kuznetsov Denis\inst{3}}
-%
-\authorrunning{V. Moskvoretskii et al.}
-% First names are abbreviated in the running head.
-% If there are more than two authors, 'et al.' is used.
-%
-\institute{DeepPavlov.ai \email{vvmoskvoretskii@yandex.ru} \\ 
-\and DeepPavlov.ai \email{antonylovanto@gmail.com} \\ 
-\and DeepPavlov.ai \email{kuznetsov.den.p@gmail.com}}
-%\email{vvmoskvoretskii@yandex.ru \and lovanto@gmail.com}
 
-%\\
-%\url{http://www.springer.com/gp/computer-science/lncs} \and
-%ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
-%\email{\{abc,lncs\}@uni-heidelberg.de}}
-%
-\maketitle              % typeset the header of the contribution
-%
+
+
+
+\maketitle
+
+
 \begin{abstract}
   Currently, dialogue systems have achieved high performance in processing text-based communication. However, they have not yet effectively incorporated visual information, which poses a significant challenge. Furthermore, existing models that incorporate images in dialogue generation focus on discussing the image itself. Our proposed approach presents a novel perspective on multi-modal dialogue systems, which interprets the image in the context of the dialogue. By doing so, we aim to expand the capabilities of current dialogue systems and transition them from single modality (text) to multi-modality. However, there is a lack of validated English datasets that contain both images and dialogue contexts for this task. Thus, we propose a two-stage approach to automatically construct a multi-modal dialogue dataset. In the first stage, we utilize text-to-image similarity and sentence similarity to identify which utterances could be replaced with an image. In the second stage, we replace those utterances by selecting a subset of relevant images and filtering them with a visual question answering model. We used this approach, along with additional labeling, to create the IMage Augmented multi-modal Dialogue dataset (IMAD), which can serve as a validated dataset for this task. Furthermore, we propose a baseline model trained on this dataset, which outperforms model trained on the same data without images and BlenderBot.
-
-\keywords{Natural Language Processing \and Deep Learning \and Machine Learning \and IMAD \and Dialogue Dataset \and Multi-modal Dataset \and Dialogue Systems \and Multi-modality.}
 \end{abstract}
-%
-%
-%
+
+
+% keywords can be removed
+\keywords{Natural Language Processing \and Deep Learning \and Machine Learning \and IMAD \and Dialogue Dataset \and Multi-modal Dataset \and Dialogue Systems \and Multi-modality.}
+
 
 \section{Introduction}
 \import{sections/}{intro.tex}
 
-
 \section{Related Works}
 \import{sections/}{RW.tex}
-
-
-
-
-%The aforementioned studies and challenges motivate the current research. Our aim is to develop a dataset that includes English dialogues with image replacements for some utterances, which is thoroughly validated and based on large image corpora. Additionally, we propose to use cross-attention approach, just as BLIP, to that task, instead of concatenating the embeddings from the context and image encoders before applying decoder.
-
 
 \section{Dialogue Datasets}
 \import{sections/}{dialogue_datasets.tex}
@@ -108,24 +102,96 @@ Kuznetsov Denis\inst{3}}
 \import{sections/}{Conclusion.tex}
 
 
+% \section{Headings: first level}
+% \label{sec:headings}
+
+% \lipsum[4] See Section \ref{sec:headings}.
+
+% \subsection{Headings: second level}
+% \lipsum[5]
+% \begin{equation}
+% \xi _{ij}(t)=P(x_{t}=i,x_{t+1}=j|y,v,w;\theta)= {\frac {\alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}{\sum _{i=1}^{N} \sum _{j=1}^{N} \alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}}
+% \end{equation}
+
+% \subsubsection{Headings: third level}
+% \lipsum[6]
+
+% \paragraph{Paragraph}
+% \lipsum[7]
+
+% \section{Examples of citations, figures, tables, references}
+% \label{sec:others}
+% \lipsum[8] \cite{kour2014real,kour2014fast} and see \cite{hadash2018estimate}.
+
+% The documentation for \verb+natbib+ may be found at
+% \begin{center}
+%   \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
+% \end{center}
+% Of note is the command \verb+\citet+, which produces citations
+% appropriate for use in inline text.  For example,
+% \begin{verbatim}
+%    \citet{hasselmo} investigated\dots
+% \end{verbatim}
+% produces
+% \begin{quote}
+%   Hasselmo, et al.\ (1995) investigated\dots
+% \end{quote}
+
+% \begin{center}
+%   \url{https://www.ctan.org/pkg/booktabs}
+% \end{center}
 
 
+% \subsection{Figures}
+% \lipsum[10] 
+% See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
+% \lipsum[11] 
+
+% \begin{figure}
+%   \centering
+%   \fbox{\rule[-.5cm]{4cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+%   \caption{Sample figure caption.}
+%   \label{fig:fig1}
+% \end{figure}
+
+% \subsection{Tables}
+% \lipsum[12]
+% See awesome Table~\ref{tab:table}.
+
+% \begin{table}
+%  \caption{Sample table title}
+%   \centering
+%   \begin{tabular}{lll}
+%     \toprule
+%     \multicolumn{2}{c}{Part}                   \\
+%     \cmidrule(r){1-2}
+%     Name     & Description     & Size ($\mu$m) \\
+%     \midrule
+%     Dendrite & Input terminal  & $\sim$100     \\
+%     Axon     & Output terminal & $\sim$10      \\
+%     Soma     & Cell body       & up to $10^6$  \\
+%     \bottomrule
+%   \end{tabular}
+%   \label{tab:table}
+% \end{table}
+
+% \subsection{Lists}
+% \begin{itemize}
+% \item Lorem ipsum dolor sit amet
+% \item consectetur adipiscing elit. 
+% \item Aliquam dignissim blandit est, in dictum tortor gravida eget. In ac rutrum magna.
+% \end{itemize}
 
 
+% \section{Conclusion}
+% Your conclusion here
 
+% \section*{Acknowledgments}
+% This was was supported in part by......
 
-
-%
-% ---- Bibliography ----
-%
-% BibTeX users should specify bibliography style 'splncs04'.
-% References will then be sorted and formatted in the correct style.
-%
-% \bibliographystyle{splncs04}
-% \bibliography{mybibliography}
-%
-\bibliographystyle{splncs04}
-\bibliography{main}
+%Bibliography
+\bibliographystyle{unsrt}  
+\bibliography{references}  
 
 \section*{Appendix A. Implementation details}
 \import{sections/}{appendix_A.tex}
@@ -142,6 +208,7 @@ Kuznetsov Denis\inst{3}}
 
 \section*{Appendix D. Labeling methodology}
 \import{sections/}{appendix_E.tex}
+
 
 
 \end{document}

@@ -76,7 +76,7 @@ The process of selecting a better image for an utterance was carried out using t
     \item \textbf{Calculate confidences}. For each image in aforementioned set we calculate confidence $\Bigl\{ \operatorname{Confidence(out, u)} \, \big| \, out = \operatorname{VQA}(quest, i) \quad \forall i \in TopImg_{u,N}\Bigr\} =: ConfSet_{u,N} $.
 
     
-    \item \textbf{Select the most confident}. Then we select image with the highest confidence score $\displaystyle\argmax \{ConfSet_{u,N}\} =: img_{N}$.
+    \item \textbf{Select the most confident}. Then we select image with the highest confidence score $\operatorname{argmax} \{ConfSet_{u,N}\} =: img_{N}$.
 \end{enumerate}
 
 \smallskip

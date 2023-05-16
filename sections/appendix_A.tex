@@ -1,6 +1,6 @@
 Formally pairs of utterance and images are made this way.
 
-Giver set of images $I$, we created pairs $$\forall u \quad \exists \, (u,img): img = \displaystyle\argmax_{i \in I} \{\operatorname{cosine}(\operatorname{emb}_{CLIP}(u), \operatorname{emb}_{CLIP}(i))\}$$, where $\operatorname{emb}_{CLIP}(u)$ is taking embedding from CLIP for utterance and $\operatorname{emb}_{CLIP}(i)$ is taking embedding from CLIP for images and $\operatorname{cosine}(a,b) = \frac{a \cdot b}{ \| a \| \cdot \| b\|}$ is calculating cosine similarity between vectors in a usual sense.
+Giver set of images $I$, we created pairs $$\forall u \quad \exists \, (u,img): img = \operatorname{argmax}_{i \in I} \{\operatorname{cosine}(\operatorname{emb}_{CLIP}(u), \operatorname{emb}_{CLIP}(i))\}$$, where $\operatorname{emb}_{CLIP}(u)$ is taking embedding from CLIP for utterance and $\operatorname{emb}_{CLIP}(i)$ is taking embedding from CLIP for images and $\operatorname{cosine}(a,b) = \frac{a \cdot b}{ \| a \| \cdot \| b\|}$ is calculating cosine similarity between vectors in a usual sense.
 
 Main features are described in depth below:
 
@@ -56,7 +56,7 @@ There is a list of pictorialization features that were tested, but resulted in w
 \begin{figure}[h]
 \centering
 % TODO: uncomment
-% \includegraphics[width=8cm]{FI_old.png}
+ \includegraphics[width=8cm]{FI_old.png}
 \caption{Feature Importance in Random Forest Model for predicting if an utterance could be replaced with an image. Image Score is maximum cosine similarity between utterance and images embeddings from CLIP. Threshold is binary feature, indicating if Image Score, Sentence Similarity and Maximum Entity Score is bigger than empirically founded values. Sentence Similarity is cosine distance similarity between utterance embedding and caption embedding, that were generated from corresponding image with VIT-GPT2, where embeddings come from SentenceBert. BLEU is calculated between utterance and generated caption with taking only unigrams into account. Maximum Entity Score is maximum out of Image Scores for each noun in utterance.}
 \label{pictorialization::FI}
 \end{figure}
